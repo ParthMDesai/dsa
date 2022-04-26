@@ -1,0 +1,90 @@
+#include <stdio.h>
+#define max 5
+
+int stack[max],sel,top=-1,ele,val;
+
+
+void push()
+{
+if(top==max-1)
+{
+printf("OVERFLOW\n");
+}
+else
+{
+printf("Enter the element:\n");
+scanf("%d",&ele);
+top=top+1;
+stack[top]=ele;
+}
+}
+
+
+void pop()
+{
+if(top==-1)
+{
+printf("UNDERFLOW\n");
+}
+else
+{
+val=stack[top];
+stack[top]=0;
+top=top-1;
+printf("%d is popped\n",val);
+}
+
+}
+
+
+void peek()
+{
+if(top==-1)
+{
+printf("STACK IS EMPTY\n");
+}
+else
+{
+printf("%d\n",stack[top]);
+}
+}
+
+
+void display()
+{
+int i;
+for(i=0;i<max;i++)
+{
+printf("%d ",stack[i]);
+}
+printf("\n");
+}
+
+int main()
+{
+do
+{
+printf("Select the type of operation:\n");
+printf("1. push\n2. pop\n3. peek\n4. display\n5. size\n6. exit\n");
+scanf("%d",&sel);
+
+switch(sel)
+{
+case 1:
+push();
+break;
+case 2:
+pop();
+break;
+case 3:
+peek();
+break;
+case 4:
+display();
+break;
+case 5:
+printf("%d\n",top);
+break;
+}
+}while(sel!=6);
+}

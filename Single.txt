@@ -1,0 +1,356 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct node
+{
+int data;
+struct node *next;
+};
+
+struct node *start = NULL;
+struct node *create(struct node *);
+struct node *display(struct node *);
+struct node *insert_beg(struct node *);
+struct node *insert_end(struct node *);
+struct node *insert_before(struct node *);
+struct node *insert_after(struct node *);
+struct node *delete_beg(struct node *);
+struct node *delete_end(struct node *);
+struct node *delete_node(struct node *);
+struct node *delete_after(struct node *);
+struct node *delete_list(struct node *);
+struct node *count_list(struct node *);
+
+int main()
+{
+int option;
+do
+{
+
+printf("\n \n MAIN MENU");
+printf("\n 1: CREATE LINKED LIST");
+printf("\n 2: DISPLAY THE LIST");
+printf("\n 3: ADD A NODE IN THE BEGINNING");
+printf("\n 4: ADD A NODE AT THE END");
+printf("\n 5: ADD A NODE BEFORE THE GIVEN NODE");
+printf("\n 6: ADD A NODE AFTER THE GIVEN NODE");
+printf("\n 7: DELETE NODE FROM THE BEGINNING");
+printf("\n 8: DELETE NODE FROM THE END");
+printf("\n 9: DELETE A GIVEN NODE");
+printf("\n 10: DELETE A NODE AFTER A GIVEN NODE");
+printf("\n 11: DELETE THE ENTIRE LIST");
+printf("\n 12: COUNT THE NUMBER OF ELEMENTS IN THE LIST");
+printf("\n 13: EXIT");
+printf("\n\n Enter your option :");
+scanf("%d",&option);
+switch(option)
+{
+
+case 1: start = create(start);
+printf("LINKED LIST CREATED");
+break;
+case 2: start = display(start);
+break;
+case 3: start = insert_beg(start);
+break;
+case 4: start = insert_end(start);
+break;
+case 5: start = insert_before(start);
+break;
+case 6: start = insert_after(start);
+break;
+case 7: start = delete_beg(start);
+break;
+case 8: start = delete_end(start);
+break;
+case 9: start = delete_node(start);
+break;
+case 10: start = delete_after(start);
+break;
+case 11: start = delete_list(start);
+printf("\n LINKED LIST DELETED");
+break;
+case 12: start = count_list(start);
+break;
+
+}
+}while(option != 13);
+return 0;
+
+}
+ 
+struct node *create(struct node *start)
+{
+
+struct node *new_node, *ptr;
+int num;
+printf("\n ENTER -1 TO STOP");
+printf("\n ENTER DATA :");
+scanf("%d",&num);
+while(num != -1)
+{
+
+new_node = (struct node*)malloc(sizeof(struct node));
+new_node -> data=num;
+if (start==NULL)
+{
+
+new_node -> next=NULL;
+start = new_node;
+
+}
+else
+{
+
+ptr = start;
+while(ptr -> next != NULL)
+ptr = ptr ->next;
+ptr -> next = new_node;
+}
+printf("\n ENTER DATA :");
+scanf("%d",&num);
+}
+return start;
+}
+
+struct node *display(struct node *start)
+{
+struct node *ptr;
+ptr = start;
+if(ptr == NULL)
+{
+
+printf("LINKED LIST NOT CREATED. TASK CAN'T BE PERFORMED");
+return 0;
+}
+while(ptr != NULL)
+{
+
+printf("%d\n",ptr->data);
+ptr = ptr->next;
+
+}
+return start;
+}
+
+//CASE 3
+struct node *insert_beg(struct node *start)
+{
+if(start == NULL)
+{
+printf("LINKED LIST NOT CREATED. TASK CAN'T BE PERFORMED");
+return 0;
+}
+
+struct node *new_node;
+new_node = (struct node*)malloc(sizeof(struct node));
+printf("ENTER DATA YOU WANT TO INSERT ");
+scanf("%d",&new_node->data);
+new_node -> next=start;
+start = new_node;
+return start;
+}
+
+struct node *insert_end(struct node *start)
+{
+if(start == NULL)
+{
+printf("LINKED LIST NOT CREATED. TASK CAN'T BE PERFORMED");
+return 0;
+}
+
+struct node *ptr, *new_node;
+int num;
+printf("\n ENTER THE DATA : ");
+scanf("%d",&num);
+new_node = (struct node*)malloc(sizeof(struct node));
+new_node -> data=num;
+new_node ->next=0;
+ptr = start;
+while(ptr -> next != 0)
+{
+ptr = ptr -> next;
+}
+ptr -> next = new_node;
+return start;
+
+}
+
+struct node *insert_before(struct node *start)
+{
+
+if(start == NULL)
+{
+printf("LINKED LIST NOT CREATED. TASK CAN'T BE PERFORMED");
+return 0;
+}
+
+struct node *new_node, *ptr, *preptr;
+int num,val;
+printf("\n ENTER THE DATA : \n");
+scanf("%d",&num);
+printf("\n ENTER THE VALUE BEFORE WHICH THE VALUE HAS TO BE INSERTED : \n");
+scanf("%d",&val);
+new_node = (struct node*)malloc(sizeof(struct node));
+new_node -> data=num;
+ptr = start;
+while(ptr -> next -> data != val)
+{
+ptr = ptr -> next;
+}
+new_node->next = ptr->next;
+ptr->next = new_node;
+return start;
+}
+
+
+struct node *insert_after(struct node *start)
+{
+if(start == NULL)
+{
+printf("LINKED LIST NOT CREATED. TASK CAN'T BE PERFORMED");
+return 0;
+}
+
+struct node *new_node, *ptr, *preptr;
+int num,val;
+printf("\n ENTER THE DATA : \n");
+scanf("%d",&num);
+printf("\n ENTER THE VALUE AFTER WHICH THE VALUE HAS TO BE INSERTED : \n");
+scanf("%d",&val);
+new_node = (struct node*)malloc(sizeof(struct node));
+new_node -> data=num;
+ptr = start;
+preptr = ptr;
+while(ptr->data != val)
+{
+ptr = ptr->next;
+}
+
+new_node->next = ptr->next;
+ptr->next = new_node;
+return start;
+}
+
+struct node *delete_beg(struct node *start)
+{
+if(start == NULL)
+{
+printf("LINKED LIST NOT CREATED. TASK CAN'T BE PERFORMED");
+return 0;
+}
+struct node *ptr;
+ptr = start;
+start = start->next;
+return start;
+}
+
+struct node *delete_end(struct node *start)
+{
+if(start == NULL)
+{
+printf("LINKED LIST NOT CREATED. TASK CAN'T BE PERFORMED");
+return 0;
+}
+struct node *ptr, *preptr;
+ptr = start;
+while(ptr->next != 0)
+{
+preptr = ptr;
+ptr = ptr->next;
+}
+if(ptr == start)
+{
+start = 0;
+}
+else
+{
+preptr -> next=0;
+}
+return start;
+}
+
+struct node *delete_node(struct node *start)
+{
+
+if(start == NULL)
+{
+printf("LINKED LIST NOT CREATED. TASK CAN'T BE PERFORMED");
+return 0;
+}
+int val,i=1;
+struct node *nextptr, *temp;
+printf("ENTER THE NODE TO BE DELETED : \n");
+scanf("%d",&val);
+temp = start;
+while(i<(val-1))
+{
+temp = temp -> next;
+i++;
+}
+nextptr = temp -> next;
+temp->next = nextptr->next;
+free(nextptr);
+return start;
+}
+
+
+struct node *delete_after(struct node *start)
+{
+if(start == NULL)
+{
+printf("LINKED LIST NOT CREATED. TASK CAN'T BE PERFORMED");
+return 0;
+}
+int pos,i=1;
+struct node *nextptr, *temp;
+printf("ENTER THE NODE POSITION NEXT TO WHICH HAS TO BE DELETED : \n");
+scanf("%d",&pos);
+temp = start;
+while(i<pos)
+{
+temp = temp -> next;
+i++;
+}
+nextptr = temp -> next;
+temp->next = nextptr->next;
+free(nextptr);
+return start;
+}
+
+struct node *delete_list(struct node *start)
+{
+if(start == NULL)
+{
+printf("LINKED LIST NOT CREATED. TASK CAN'T BE PERFORMED");
+return 0;
+}
+struct node *temp;
+temp = start;
+while(temp != NULL)
+{
+temp = temp -> next;
+free(start);
+start = temp;
+}
+return start;
+}
+
+struct node *count_list(struct node *start)
+{
+
+if(start == NULL)
+{
+printf("LINKED LIST NOT CREATED. TASK CAN'T BE PERFORMED");
+return 0;
+}
+int count=0;
+struct node *ptr;
+ptr = start;
+while(ptr != NULL)
+{
+count++;
+ptr = ptr->next;
+}
+printf("NUMBER OF ELEMENTS IN THE LIST : %d\n",count);
+return start;
+}

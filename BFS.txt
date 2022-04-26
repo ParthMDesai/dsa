@@ -1,0 +1,162 @@
+Breadth First Search (BFS):
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 100
+#define initial 1
+#define waiting 2
+#define visited 3
+int n;
+int G[MAX][MAX];
+int state[MAX];
+void bfs_traversal(int start_vertex);
+int queue[MAX], front = -1, rear = -1;
+void enqueue(int vertex);
+int dequeue();
+int isQueueEmpty();
+int main() {
+ printf("Enter no. of vertices:");
+ scanf("%d", & n);
+ printf("\nEnter the adjacency matrix:\n");
+ for (int i = 0; i < n; i++)
+ for (int j = 0; j < n; j++)
+ scanf("%d", & G[i][j]);
+ int v;
+ for (v = 0; v < n; v++)
+ state[v] = initial;
+ printf("Enter Start Vertex for BFS: \n");
+ scanf("%d", & v);
+ bfs_traversal(v);
+ return 0;
+}
+void bfs_traversal(int start_vertex) {
+ int i;
+ enqueue(start_vertex);
+ state[start_vertex] = waiting;
+ while (!isQueueEmpty()) {
+ start_vertex = dequeue();
+ printf("%d ", start_vertex);
+ state[start_vertex] = visited;
+ for (i = 0; i < n; i++) {
+ if (G[start_vertex][i] == 1 && state[i] == initial) {
+ enqueue(i);
+ state[i] = waiting;
+ }
+ }
+ }
+ printf("\n");
+}
+void enqueue(int vertex) {
+ if (rear == MAX - 1)
+ printf("Queue Overflow\n");
+ else {
+ if (front == -1)
+ front = 0;
+ rear = rear + 1;
+ queue[rear] = vertex;
+ }
+}
+int isQueueEmpty() {
+ if (front == -1 || front > rear)
+ return 1;
+ else
+ return 0;
+}
+int dequeue() {
+ int delete_item;
+ if (front == -1 || front > rear) {
+ printf("Queue Underflow\n");
+ exit(1);
+ }
+ delete_item = queue[front];
+ front = front + 1;
+ return delete_item;
+}
+/*
+0 1 1 1 0 0
+1 0 0 1 1 0
+1 0 0 1 0 1
+1 1 1 0 1 1
+0 1 0 1 0 1
+0 0 1 1 1 0
+*/
+Depth First Search:
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 100
+#define ready 1
+#define waiting 2
+#define visited 3
+int n,start_vertex,i,j;
+int G[MAX][MAX];
+int state[MAX];
+int stack[MAX],top=-1;
+void push(int vertex)
+{
+if(top==n-1)
+{
+printf("Overflow\n");
+}
+else
+{
+top++;
+stack[top]=vertex;
+}
+}
+int pop()
+{
+int val;
+if(top==-1)
+{
+printf("Underflow\n");
+}
+else
+{
+val=stack[top];
+top--;
+}
+return val;
+}
+int isStackEmpty()
+{
+if(top==-1)
+{
+return 1;
+}
+return 0;
+}
+void dfs_traversal(int start_vertex)
+{
+push(start_vertex);
+state[start_vertex]=waiting;
+while(!isStackEmpty())
+{
+int k=pop();
+printf("%d ",k);
+state[k]=visited;
+for(i=0;i<n;i++)
+{
+if(G[k][i]==1 && state[i]==ready)
+{
+push(i);
+state[i]=waiting;
+}
+}
+}
+printf("\n");
+}
+int main()
+{
+ printf("Enter no. of vertices:");
+ scanf("%d", & n);
+ printf("\nEnter the adjacency matrix:\n");
+ for (int i = 0; i < n; i++)
+ for (int j = 0; j < n; j++)
+ scanf("%d", & G[i][j]);
+ int v;
+ for (v = 0; v < n; v++)
+ state[v] = initial;
+ printf("Enter Start Vertex for DFS: \n");
+ scanf("%d", & v);
+ dfs_traversal(v);
+ return 0;
+ }

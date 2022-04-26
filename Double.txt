@@ -1,0 +1,339 @@
+#include<stdio.h>
+#include<malloc.h>
+
+struct node
+{
+struct node *next;
+int data;
+struct node *prev;
+};
+
+struct node *start=NULL;
+struct node *Create(struct node *);
+struct node *Display(struct node *);
+struct node *Insert_beg(struct node *);
+struct node *Insert_end(struct node *);
+struct node *Insert_after(struct node *);
+struct node *Insert_before(struct node *);
+struct node *Delete_beg(struct node *);
+struct node *Delete_end(struct node *);
+struct node *Delete_after(struct node *);
+struct node *Delete_before(struct node *);
+struct node *Replace(struct node *);
+struct node *Count(struct node *);
+
+int main()
+{
+int option;
+do
+{
+printf("\n 1: CREATE A LIST");
+printf("\n 2: DISPLAY THE LIST");
+printf("\n 3: ADD A NODE AT THE BEGINNING");
+printf("\n 4: ADD A NODE AT THE END");
+printf("\n 5: ADD A NODE AFTER A GIVEN NODE");
+printf("\n 6: ADD A NODE BEFORE A GIVEN NODE");
+printf("\n 7: DELETE A NODE FROM THE BEGINNING");
+printf("\n 8: DELETE A NODE FROM THE END");
+printf("\n 9: DELETE A NODE AFTER A GIVEN NODE");
+printf("\n 10: DELETE A NODE BEFORE A GIVEN NODE");
+printf("\n 11: REPLACE GIVEN DATA WITH ANOTHER GIVEN DATA FROM THE LIST");
+printf("\n 12: COUNT THE NUMBER OF DATA ITEMS IN THE LIST");
+printf("\n 13: EXIT");
+printf("\n ENTER YOUR OPTION: ");
+scanf("%d",&option);
+switch(option)
+{
+case 1: start=Create(start);
+printf("\n DOUBLY LINKED LIST CREATED");
+break;
+case 2: start=Display(start);
+break;
+case 3: start=Insert_beg(start);
+break;
+case 4: start=Insert_end(start);
+break;
+case 5: start=Insert_after(start);
+break;
+case 6: start=Insert_before(start);
+break;
+case 7: start=Delete_beg(start);
+break;
+case 8: start=Delete_end(start);
+break;
+case 9: start=Delete_after(start);
+break;
+case 10: start=Delete_before(start);
+break;
+case 11: start=Replace(start);
+break;
+case 12: start=Count(start);
+break;
+default: printf("\n INVALID INPUT");
+break;
+}
+}while(option!=13);
+return 0;
+}
+
+//CASE 1
+
+struct node *Create(struct node *start)
+{
+struct node *new_node, *ptr;
+int num;
+printf("\n ENTER -1 TO END");
+printf("\n ENTER THE DATA: ");
+scanf("%d",&num);
+while(num!=-1){
+new_node=(struct node*)malloc(sizeof(struct node));
+new_node->data=num;
+if(start==NULL)
+{
+new_node->next=NULL;
+new_node->prev=NULL;
+start=new_node;
+}
+else
+{
+ptr=start;
+while(ptr->next!=NULL)
+{
+ptr=ptr->next;
+}
+ptr->next= new_node;
+ptr->next->prev=ptr;
+}
+printf("\n ENTER THE DATA: ");
+scanf("%d",&num);
+}
+return start;
+}
+
+//CASE 2
+
+struct node *Display(struct node *start)
+{
+struct node *temp=start;
+while(temp!=NULL)
+{
+printf("\n%d", temp->data);
+temp=temp->next;
+}
+return start;
+}
+
+//CASE 3
+
+struct node *Insert_beg(struct node *start)
+{
+struct node *new_node;
+int num;
+printf("\n ENTER THE DATA: ");
+scanf("%d", &num);
+new_node=(struct node *)malloc(sizeof(struct node));
+new_node->data = num;
+start->prev=new_node;
+new_node->next=start;
+new_node->prev=NULL;
+start=new_node;
+return start;
+}
+
+//CASE 4
+
+struct node *Insert_end(struct node *start)
+{
+struct node *ptr, *new_node;
+int num;
+printf("\n ENTER THE DATA: ");
+scanf("%d", &num);
+new_node = (struct node *)malloc(sizeof(struct node));
+new_node->data=num;
+ptr=start;
+while(ptr->next!=NULL){
+ptr=ptr->next;
+}
+ptr->next=new_node;
+new_node->prev=ptr;
+new_node->next=NULL;
+return start;
+}
+
+//CASE 5
+
+struct node *Insert_after(struct node *start)
+{
+struct node *new_node, *ptr;
+int num, val;
+printf("\n ENTER THE DATA: ");
+scanf("%d", &num);
+printf("\nENTER THE VALUE AFTER WHICH DATA HAS TO BE INSERTED: ");
+scanf("%d", &val);
+new_node = (struct node *)malloc(sizeof(struct node));
+new_node->data = num;
+ptr=start;
+while(ptr->data !=val)
+{
+ptr=ptr->next;
+}
+new_node->prev=ptr;
+new_node->next=ptr->next;
+ptr->next->prev=new_node;
+ptr->next=new_node;
+return start;
+}
+
+//CSAE 6
+
+struct node *Insert_before(struct node *start)
+{
+struct node *new_node, *ptr;
+int num, val;
+printf("\nENTER THE DATA: ");
+scanf("%d", &num);
+printf("\nENTER THE VALUE BEFORE WHICH THE DATA HAS TO BE INSERTED: ");
+scanf("%d", &val);
+new_node=(struct node *)malloc(sizeof(struct node));
+new_node->data=num;
+ptr=start;
+while(ptr->data!=val){
+ptr=ptr->next;
+}
+new_node->next=ptr;
+new_node->prev=ptr->prev;
+ptr->prev->next=new_node;
+ptr->prev=new_node;
+return start;
+}
+
+//CASE 7
+
+struct node *Delete_beg(struct node *start)
+{
+struct node *ptr;
+ptr=start;
+ptr->next->prev=NULL;
+ptr=ptr->next;
+start=ptr;
+return start;
+}
+
+//CASE 8
+
+struct node *Delete_end(struct node *start)
+{
+struct node *ptr;
+ptr=start;
+while(ptr->next!=NULL)
+{
+ptr=ptr->next;
+}
+ptr->prev->next=NULL;
+ptr->prev=NULL;
+return start;
+}
+
+//CASE 9
+
+struct node *Delete_after(struct node *start)
+{
+struct node *ptr, *temp;
+int val;
+printf("\n ENTER THE VALUE AFTER WHICH THE NODE HAS TO BE DELETED: ");
+scanf("%d", &val);
+ptr=start;
+while(ptr->data!=val)
+{
+ptr=ptr->next;
+}
+temp=ptr->next;
+if(temp->next==NULL)
+{
+start=Delete_end(start);
+}
+else
+{
+ptr->next=temp->next;
+temp->next->prev=temp->prev;
+temp->next=NULL;
+temp->prev=NULL;
+}
+return start;
+}
+
+//CASE 10
+
+struct node *Delete_before(struct node *start)
+{
+struct node *ptr, *temp;
+int val;
+printf("\n ENTER THE VALUE BEFORE WHICH THE NODE HAS TO BE DELETED: ");
+scanf("%d", &val);
+ptr=start;
+while(ptr->data!=val)
+{
+ptr=ptr->next;
+}
+temp=ptr->prev;
+if(temp==start)
+{
+start=Delete_beg(start);
+}
+else
+{
+ptr->prev=temp->prev;
+temp->prev->next=temp->next;
+temp->next=NULL;
+temp->prev=NULL;;
+}
+return start;
+}
+
+//CASE 11
+
+struct node *Replace(struct node *start)
+{
+int val, new_val;
+printf("\n ENTER VALUE TO BE REPLACED: ");
+scanf("%d", &val);
+printf("\n ENTER NEW VALUE: ");
+scanf("%d", &new_val);
+struct node *ptr;
+ptr=start;
+int l=1;
+while(ptr->next!=NULL)
+{
+ptr=ptr->next;
+l++;
+}
+ptr=start;
+int count=0,i;
+for(i=0; i<l; i++)
+{
+if(ptr->data==val)
+{
+count++;
+ptr->data=new_val;
+}
+ptr=ptr->next;
+}
+printf("\nNUMBER OF ELEMENTS REPLACED: %d", count);
+return start;
+}
+
+//CASE 12
+
+struct node *Count(struct node *start)
+{
+int count=1;
+struct node *ptr;
+ptr=start;
+while(ptr->next!=NULL)
+{
+ptr=ptr->next;
+count++;
+}
+printf("\nTOTAL NUMBER OF ELEMENTS IN THE LIST ARE: %d", count);
+return start;
+}
